@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="home-body">
+  <div class="home-container">
+    <h1 class="welcome">WELCOME HOME 🎉</h1>
+    <button id="logoutBtn" class="btn logout">Logout</button>
+  </div>
+
+  <canvas id="confettiCanvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById('confettiCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const pieces = [];
+    const colors = ['#f02d3a','#ffb300','#3a86ff','#2ec4b6','#8338ec'];
+
+    for (let i = 0; i < 150; i++) {
+      pieces.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        w: 8,
+        h: 14,
+        color: colors[Math.floor(Math.random()*colors.length)],
+        speed: 2 + Math.random() * 3
+      });
+    }
+
+    function update() {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      pieces.forEach(p => {
+        p.y += p.speed;
+        if (p.y > canvas.height) p.y = -20;
+        ctx.fillStyle = p.color;
+        ctx.fillRect(p.x, p.y, p.w, p.h);
+      });
+      requestAnimationFrame(update);
+    }
+    update();
+  </script>
+
+  <script>
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('loggedUser');
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
